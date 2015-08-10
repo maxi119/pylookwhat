@@ -25,12 +25,13 @@ def lookwhat( filename, res, nameList ):
     try:
         f = open( filename, 'r' )
         fc = f.readlines()
-        inComment = False
+        inComment1 = False
+        inComment2 = False
         for line in fc:
             line = ptcomm.sub( '', line )  # remove comment
             if pstep == 0:
                 m = pt.match( line )
-                if m and not inComment:
+                if m and not (inComment1 or inComment2):
                     name = m.groups()[0]
                     if name in nameList:
                         pstep = 1
@@ -38,8 +39,10 @@ def lookwhat( filename, res, nameList ):
                         line = line[ line.find('=')+1 : ]
                         usebranch = deepcopy( _branchs )
                 else:
-                    if line.find( "'''" ) >=0 or line.find( '"""' ) >=0:
-                        inComment = not inComment
+                    if line.find( "'''" ) >=0:
+                        inComment1 = not inComment1
+                    if line.find( '"""' ) >=0:
+                        inComment2 = not inComment2
             if pstep == 1:
                 for c in line:
                     for b in usebranch:
@@ -102,12 +105,13 @@ def _do_patch( targetName, newVariables ):
         f = open( targetName, 'r' )
         fc = f.readlines()
         f.close()
-        inComment = False
+        inComment1 = False
+        inComment2 = False
         for lineTarget in fc:
             line = ptcomm.sub( '', lineTarget )  # remove comment
             if pstep == 0:
                 m = pt.match( line )
-                if m and not inComment:
+                if m and not (inComment1 or inComment2 ):
                     name = m.groups()[0]
                     if name in nameList:
                         pstep = 1
@@ -115,8 +119,10 @@ def _do_patch( targetName, newVariables ):
                         line = line[ line.find('=')+1 : ]
                         usebranch = deepcopy( _branchs )
                 else:
-                    if line.find( "'''" ) >=0 or line.find( '"""' ) >=0:
-                        inComment = not inComment
+                    if line.find( "'''" ) >=0:
+                        inComment1 = not inComment1
+                    if line.find( '"""' ) >=0:
+                        inComment2 = not inComment2
 
                     newFileContent.append( lineTarget )
             if pstep == 1:
