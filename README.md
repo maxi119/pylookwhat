@@ -19,3 +19,28 @@
     
     print what
 
+
+    
+# patch 
+
+	python -m pylookwhat patch target.py source.py false
+
+
+
+target.py
+
+    A="Hello"
+    B=123
+
+
+source.py
+
+    A = "Hello World"
+
+Patched target.py
+
+    A = "Hello World"
+    B=123
+
+    
+  

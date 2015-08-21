@@ -62,3 +62,6 @@ Patched target.py
     A = "Hello World"
     B=123
 
+
+1.0.3
+	Fix missing text when patch with dict variables

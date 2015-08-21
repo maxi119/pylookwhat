@@ -39,9 +39,11 @@ def lookwhat( filename, res, nameList ):
                         line = line[ line.find('=')+1 : ]
                         usebranch = deepcopy( _branchs )
                 else:
-                    if line.find( "'''" ) >=0:
+                    c1 = line.find( "'''" )
+                    if c1 >= 0 and line.find( "'''", c1+3 ) <0:
                         inComment1 = not inComment1
-                    if line.find( '"""' ) >=0:
+                    c1 = line.find( '"""' )
+                    if c1 >= 0 and line.find( '"""', c1+3 ) <0:
                         inComment2 = not inComment2
             if pstep == 1:
                 for c in line:
@@ -118,10 +120,15 @@ def _do_patch( targetName, newVariables ):
                         psname = name    
                         line = line[ line.find('=')+1 : ]
                         usebranch = deepcopy( _branchs )
+                    else:
+                        #print lineTarget
+                        newFileContent.append( lineTarget )
                 else:
-                    if line.find( "'''" ) >=0:
+                    c1 = line.find( "'''" )
+                    if c1 >= 0 and line.find( "'''", c1+3 ) <0:
                         inComment1 = not inComment1
-                    if line.find( '"""' ) >=0:
+                    c1 = line.find( '"""' )
+                    if c1 >= 0 and line.find( '"""', c1+3 ) <0:
                         inComment2 = not inComment2
 
                     newFileContent.append( lineTarget )
@@ -144,7 +151,7 @@ def _do_patch( targetName, newVariables ):
             if pstep == 2:
                 newVar = newVariables.get( psname )
                 newCt = psname + ' = ' + pprint.pformat( newVar, indent=4 ) 
-                print newCt
+                #print newCt
                 newFileContent.append( newCt +'\n' )
                     
                 pstep = 0
